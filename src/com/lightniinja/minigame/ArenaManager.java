@@ -123,7 +123,9 @@ public class ArenaManager {
 		p.setFireTicks(0);
 	}
 	public Arena createArena(Location l, String name) {
-		arenaSize++;
+		if(arenaSize == 0 && arenas.size() > 0) {
+			arenaSize++;
+		}
 		Arena a = new Arena(l, arenaSize);
 		arenas.put(a, name);
 		pl.getConfig().set("Arenas." + arenaSize + ".Location", serializeLoc(l));
@@ -132,6 +134,7 @@ public class ArenaManager {
 		list.add(arenaSize);
 		pl.getConfig().set("Arenas.Arenas", list);
 		pl.saveConfig();
+		arenaSize++;
 		return a;
 	}
 	public void loadArenas() {
@@ -154,5 +157,8 @@ public class ArenaManager {
     public Location deserializeLoc(String s){
         String[] st = s.split(",");
         return new Location(Bukkit.getWorld(st[0]), Integer.parseInt(st[1]), Integer.parseInt(st[2]), Integer.parseInt(st[3]));
+    }
+    public Plugin getPlugin() {
+    	return ArenaManager.pl;
     }
 }
